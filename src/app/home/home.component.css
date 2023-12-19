@@ -1,0 +1,69 @@
+.wrapper {
+  background-color: #eee;
+}
+.background-container {
+  background-image: url("/assets/images/computer.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  color: #fff;
+}
+
+.jobsearch {
+  min-height: 100px;
+  margin-top: 170px;
+}
+
+.jobsearch div {
+  display: flex;
+  flex-direction: row;
+}
+
+.jobsearch .searchBtn {
+  width: 100%;
+}
+
+.jobsearch h3 {
+  color: #fff;
+}
+
+.jobsearchfilter {
+  margin-top: 7px;
+  align-items: center;
+}
+.jobsearchfilter .col-sm-2,
+.jobsearchfilter .col-sm-4 {
+  gap: 8px;
+}
+
+.register {
+  margin: 30px;
+}
+
+.register .registerBtn {
+  width: 100%;
+}
+
+.aboutus {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #eee;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aboutus .bluedash {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 70px;
+  background-color: blue;
+  height: 4px;
+}
+
+.aboutus p {
+  padding: 0px;
+  margin: 0px;
+}

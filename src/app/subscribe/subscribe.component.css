@@ -1,0 +1,34 @@
+.subscribe {
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  background-color: #000;
+  color: #fff;
+  margin-top: 20px;
+}
+.subscribe .row {
+  width: 100%;
+}
+
+.subscribe .subscribeInputBtn {
+  margin-top: 15px;
+  padding: 2px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.subscribe .subscribeInputBtn .subscribeInput {
+  border: 0px;
+  outline: none;
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+}
+
+.subscribe .subscribeInputBtn .subscribeBtn {
+  padding-left: 7px;
+  padding-right: 7px;
+}

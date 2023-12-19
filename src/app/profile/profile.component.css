@@ -1,0 +1,38 @@
+.headerWrapper {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.imageArea{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.updateSettings {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  width: 100%;
+}
+
+.updateSettings .col-6{
+  display: flex;
+}
+
+.updateBtnCol{
+  justify-content: end;
+}
+
+.editProfileCol{
+  justify-content: start;
+}
+
+.profileText {
+  color: #007bff;
+}
+
+.emailValue{
+  color: #007bff;
+}

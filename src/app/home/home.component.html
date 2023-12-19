@@ -1,0 +1,86 @@
+<div class="wrapper">
+  <div
+    app-register
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  ></div>
+  <div class="background-container">
+    <div class="container">
+      <app-header></app-header>
+      <section class="jobsearch">
+        <div class="row">
+          <div class="col-12">
+            <h3><i>I'm looking for..</i></h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter a Job Description"
+              aria-label="Enter a Job Description"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-primary searchBtn" type="button">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+        </div>
+        <div class="row jobsearchfilter">
+          <div class="col-sm-2"><input type="checkbox" /> <i>Full Time</i></div>
+          <div class="col-sm-4">
+            <input type="checkbox" /> <i>Part Time / Casual / Freelance</i>
+          </div>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Select your Location"
+              aria-label="Select your Location"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="register">
+        <div class="row">
+          <div class="offset-sm-5 col-sm-2">
+            <button
+              class="btn btn-primary registerBtn"
+              type="button"
+              (click)="showRegisterModal()"
+            >
+              Register
+            </button>
+            <app-register *ngIf="isShowRegisterModal"> </app-register>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <main>
+    <section class="aboutus">
+      <h4><i>We're leaders in</i></h4>
+      <h2>Creative Digital Recruitment</h2>
+      <div class="bluedash"></div>
+      <p>
+        Based in Surry Hills, the creative hub of Sydney we are surrounded by
+        creativity
+      </p>
+      <p>and that reflects on the type of jobs we recruit for.</p>
+      <button type="button" class="btn btn-outline-primary mt-5">
+        FIND OUT MORE ABOUT US!
+      </button>
+    </section>
+    <app-subscribe></app-subscribe>
+    <app-footer></app-footer>
+  </main>
+</div>

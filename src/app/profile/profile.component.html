@@ -1,0 +1,74 @@
+<div>
+  <div class="headerWrapper">
+    <div class="container">
+      <app-header></app-header>
+    </div>
+  </div>
+  <div class="container mt-3">
+    <p class="profileText">Profile</p>
+    <div class="row">
+      <div class="col-6">
+        <div class="imageArea">
+          <img
+            *ngIf="profileValue.file"
+            [src]="previewUrl$ | async"
+            alt="Selected Image"
+            width="310"
+            height="325"
+          />
+          <img
+            *ngIf="!profileValue.file"
+            src="/assets/images/girlphoto.png"
+            width="310"
+            height="325"
+          />
+
+          <div class="updateSettings mt-3 row">
+            <div class="col-6 updateBtnCol">
+              <span
+                class="mt-3"
+                class="btn btn-warning uploadBtn"
+                type="button"
+                (click)="fileInput.click()"
+              >
+                <span>Edit Photo</span>
+                <input
+                  #fileInput
+                  type="file"
+                  accept="image/*"
+                  (change)="onFileChange($event)"
+                  style="display: none"
+                />
+              </span>
+            </div>
+            <div class="col-6 editProfileCol">
+              <span>
+                <button
+                  class="btn btn-warning registerBtn"
+                  type="button"
+                  (click)="showRegisterModal()"
+                >
+                  Edit Profile
+                </button>
+                <app-register *ngIf="isShowRegisterModal"> </app-register>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <p>
+          I'm {{ profileValue.firstName }} {{ profileValue.lastName }} and Im
+          above {{ profileValue.age }} years and you can send your emails to
+          <span class="emailValue">{{ profileValue.email }}</span
+          >. I live in the state of {{ profileValue.state }}. I like to play
+          <span *ngFor="let tag of profileValue.tags">{{ tag + ", " }}</span> .
+          And please send me newsletters. Please reach out to me on my phone
+          number.
+        </p>
+        <button class="btn btn-success mt-3">I Agree</button>
+      </div>
+    </div>
+  </div>
+  <app-subscribe></app-subscribe>
+</div>

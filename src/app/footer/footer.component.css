@@ -1,0 +1,39 @@
+.footer {
+  display: block;
+  background-color: #eee;
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.footer .sendEmailInput {
+  margin-left: 10px;
+  border: 0px;
+  outline: none;
+  border-radius: 2px;
+}
+
+.footer .footercopyright {
+  margin-top: 10px;
+}
+
+.socialBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer .socialBtn .tweetBtn,
+.footer .socialBtn .fbBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.footer .footerEnvelope{
+  display: flex;
+  flex-direction: row;
+}
