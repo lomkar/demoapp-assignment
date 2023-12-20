@@ -10,19 +10,44 @@ import { ProfileModel } from "../register/register.model";
 })
 export class ProfileComponent implements OnInit {
   previewUrl$: Observable<string>;
-  profileValue: ProfileModel;
+  profileValue: ProfileModel = {
+    addressType: "",
+    age: 0,
+    country: "",
+    email: "",
+    file: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    state: "",
+    subscribe: false,
+    tags: [],
+    companyAddress1: "",
+    companyAddress2: "",
+    homeAddress1: "",
+    homeAddress2: "",
+  };
   isShowRegisterModal: boolean;
   private isShowRegisterModalSubscription: Subscription;
   private profileValueSubscription: Subscription;
 
+  imageFile: string | ArrayBuffer;
+
   constructor(private profileService: ProfileService) {}
 
   ngOnInit() {
-    this.profileValueSubscription = this.profileService.profileValue$.subscribe((value) => {
-      this.profileValue = value;
-      this.previewUrl$ = this.getPreviewUrl();
+    this.profileValueSubscription = this.profileService.profileValue$.subscribe(
+      (value) => {
+        this.profileService.getProfile().subscribe((response) => {
+          this.profileValue = response;
+        });
+      }
+    );
+
+    this.profileService.getProfile().subscribe((response) => {
+      this.profileValue = response;
     });
-    
+
     this.isShowRegisterModalSubscription =
       this.profileService.isShowRegisterModel.subscribe((value) => {
         this.isShowRegisterModal = value;
@@ -33,38 +58,36 @@ export class ProfileComponent implements OnInit {
     this.profileService.showRegiserModel(true);
   }
 
-  private getPreviewUrl(): Observable<string> {
-    const file = this.profileValue.file;
-
-    if (file) {
-      return new Observable<string>((observer) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          observer.next(reader.result as string);
-          observer.complete();
-        };
-
-        reader.onerror = (error) => {
-          observer.error(error);
-        };
-
-        reader.readAsDataURL(file);
-      });
-    }
-
-    return new Observable<string>();
-  }
-
   onFileChange(event) {
     const fileInput = event.target;
 
     if (fileInput.files && fileInput.files.length) {
       const [file] = fileInput.files;
       this.profileService.updateFile(file);
-
-      this.previewUrl$ = this.getPreviewUrl();
     }
+  }
+
+  onImageChange(event: any): void {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.convertToBase64(file);
+    }
+  }
+
+  convertToBase64(file: File): void {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      this.imageFile = e.target.result;
+      this.profileService.updateFile(this.imageFile).subscribe((response) => {
+        this.profileService.getProfile().subscribe((response1) => {
+          this.profileValue = response1;
+        });
+      });
+    };
+
+    reader.readAsDataURL(file);
   }
 
   ngOnDestroy(): void {

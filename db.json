@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "phone": "",
+    "age": 0,
+    "state": "",
+    "country": "",
+    "subscribe": false,
+    "tags": [],
+    "addressType": "",
+    "homeAddress1": "",
+    "homeAddress2": "",
+    "companyAddress1": "",
+    "companyAddress2": "",
+    "file": ""
+  }

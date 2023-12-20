@@ -10,14 +10,19 @@
       <div class="col-6">
         <div class="imageArea">
           <img
-            *ngIf="profileValue.file"
-            [src]="previewUrl$ | async"
-            alt="Selected Image"
+            *ngIf="
+              profileValue && profileValue.file && profileValue.file.length > 0
+            "
+            [src]="profileValue.file"
+            alt="Preview"
             width="310"
             height="325"
           />
+
           <img
-            *ngIf="!profileValue.file"
+            *ngIf="
+              profileValue && (!profileValue.file || profileValue.length <= 0)
+            "
             src="/assets/images/girlphoto.png"
             width="310"
             height="325"
@@ -36,7 +41,7 @@
                   #fileInput
                   type="file"
                   accept="image/*"
-                  (change)="onFileChange($event)"
+                  (change)="onImageChange($event)"
                   style="display: none"
                 />
               </span>

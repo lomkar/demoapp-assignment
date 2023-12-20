@@ -10,14 +10,17 @@
           <div class="col-5">
             <div class="imageArea">
               <img
-                *ngIf="myForm.value.file"
-                [src]="previewUrl$ | async"
-                alt="Selected Image"
+                *ngIf="
+                  myForm && myForm.value.file && myForm.value.file.length > 0
+                "
+                [src]="myForm.value.file"
+                alt="Preview"
                 width="310"
                 height="325"
               />
+
               <img
-                *ngIf="!myForm.value.file"
+                *ngIf="!imageFile && this.profileService.isEdit.value == false"
                 src="/assets/images/girlphoto.png"
                 width="310"
                 height="325"
@@ -33,7 +36,7 @@
                   #fileInput
                   type="file"
                   accept="image/*"
-                  (change)="onFileChange($event)"
+                  (change)="onImageChange($event)"
                   style="display: none"
                 />
               </span>

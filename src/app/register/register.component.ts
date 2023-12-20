@@ -30,48 +30,54 @@ export class RegisterComponent implements OnInit {
   myFormProfileValue: ProfileModel;
   myForm: FormGroup;
   tag: string = "";
-  selectedFile: File;
+  // selectedFile: File;
+  imageFile: string | ArrayBuffer;
   previewUrl$: Observable<string>;
 
   ngOnInit() {
-    if (this.profileService.isEdit) {
-      let profileValue = this.profileService.getProfileData();
-      this.myForm = new FormGroup({
-        firstName: new FormControl(profileValue.firstName, [
-          Validators.required,
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z]+$/), // Alphabetic characters only
-        ]),
-        lastName: new FormControl(profileValue.lastName, Validators.required),
-        email: new FormControl(profileValue.email, [
-          Validators.required,
-          Validators.email,
-        ]),
-        phone: new FormControl(profileValue.phone, Validators.required),
-        age: new FormControl(profileValue.age, Validators.required),
-        state: new FormControl(profileValue.state, Validators.required),
-        country: new FormControl(profileValue.country, Validators.required),
-        subscribe: new FormControl(profileValue.subscribe,Validators.required),
-        tags: new FormArray([]),
-        addressType: new FormControl(
-          profileValue.addressType,
-          Validators.required
-        ), 
-        homeAddress1: new FormControl(profileValue.homeAddress1),
-        homeAddress2: new FormControl(profileValue.homeAddress2),
-        companyAddress1: new FormControl(profileValue.companyAddress1),
-        companyAddress2: new FormControl(profileValue.companyAddress2),
-        file: new FormControl(profileValue.file, [Validators.required]),
+    if (this.profileService.isEdit.value) {
+      this.profileService.getProfile().subscribe((response) => {
+        let profileValue = response;
+        this.myForm = new FormGroup({
+          firstName: new FormControl(profileValue.firstName, [
+            Validators.required,
+            Validators.maxLength(20),
+            Validators.pattern(/^[a-zA-Z]+$/), // Alphabetic characters only
+          ]),
+          lastName: new FormControl(profileValue.lastName, Validators.required),
+          email: new FormControl(profileValue.email, [
+            Validators.required,
+            Validators.email,
+          ]),
+          phone: new FormControl(profileValue.phone, Validators.required),
+          age: new FormControl(profileValue.age, Validators.required),
+          state: new FormControl(profileValue.state, Validators.required),
+          country: new FormControl(profileValue.country, Validators.required),
+          subscribe: new FormControl(
+            profileValue.subscribe,
+            Validators.required
+          ),
+          tags: new FormArray([]),
+          addressType: new FormControl(
+            profileValue.addressType,
+            Validators.required
+          ),
+          homeAddress1: new FormControl(profileValue.homeAddress1),
+          homeAddress2: new FormControl(profileValue.homeAddress2),
+          companyAddress1: new FormControl(profileValue.companyAddress1),
+          companyAddress2: new FormControl(profileValue.companyAddress2),
+          file: new FormControl(profileValue.file, [Validators.required]),
+        });
+
+        for (let i = 0; i < profileValue.tags.length; i++) {
+          const control = new FormControl(
+            profileValue.tags[i],
+            Validators.required
+          );
+
+          (<FormArray>this.myForm.get("tags")).push(control);
+        }
       });
-
-      for (let i = 0; i < profileValue.tags.length; i++) {
-        const control = new FormControl(
-          profileValue.tags[i],
-          Validators.required
-        );
-
-        (<FormArray>this.myForm.get("tags")).push(control);
-      }
     } else {
       this.myForm = new FormGroup({
         firstName: new FormControl(null, [
@@ -85,7 +91,7 @@ export class RegisterComponent implements OnInit {
         age: new FormControl(0, Validators.required),
         state: new FormControl(null, Validators.required),
         country: new FormControl(null, Validators.required),
-        subscribe: new FormControl(false,Validators.required),
+        subscribe: new FormControl(false, Validators.required),
         tags: new FormArray([]),
         addressType: new FormControl("home", Validators.required), // Default to 'home'
         homeAddress1: new FormControl(""),
@@ -95,8 +101,6 @@ export class RegisterComponent implements OnInit {
         file: new FormControl(null, [Validators.required]),
       });
     }
-
-    this.previewUrl$ = this.getPreviewUrl();
   }
 
   onAddTag(inputTag: HTMLInputElement) {
@@ -119,53 +123,50 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.myForm.valid) {
       this.myFormProfileValue = this.myForm.value;
-      this.profileService.updateProfileData(this.myFormProfileValue);
-      this.closeModal();
-      if (!this.profileService.isEdit.value) {
-        this.profileService.setIsEditting(true);
-
-        this.router.navigate(["profile"]);
-      }
-    }
-  }
-
-  private getPreviewUrl(): Observable<string> {
-    const file = this.myForm.value.file;
-
-    if (file) {
-      return new Observable<string>((observer) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          observer.next(reader.result as string);
-          observer.complete();
-        };
-
-        reader.onerror = (error) => {
-          observer.error(error);
-        };
-
-        reader.readAsDataURL(file);
-      });
-    }
-
-    return new Observable<string>();
-  }
-
-  onFileChange(event) {
-    const fileInput = event.target;
-
-    if (fileInput.files && fileInput.files.length) {
-      const [file] = fileInput.files;
-      this.myForm.patchValue({
-        file: file,
-      });
-
-      this.previewUrl$ = this.getPreviewUrl();
+      this.profileService.addProfile(this.myFormProfileValue).subscribe(
+        (response) => {
+          this.closeModal();
+          this.profileService.changeProfileDataSubject();
+          if (!this.profileService.isEdit.value) {
+            this.profileService.setIsEditting(true);
+            this.router.navigate(["profile"]);
+          }
+        },
+        (err) => {
+          console.log("ERROR in adding Profile =>", err);
+          this.closeModal();
+        }
+      );
     }
   }
 
   closeModal() {
     this.profileService.showRegiserModel(false);
+  }
+
+  onImageChange(event: any): void {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.convertToBase64(file);
+    }
+  }
+
+  convertToBase64(file: File): void {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      this.imageFile = e.target.result;
+      this.myForm.patchValue({ file: this.imageFile });
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  updateProfile(): void {
+    const updatedProfile = this.myForm.value;
+    this.profileService.updateProfile(updatedProfile).subscribe((response) => {
+      console.log("Profile updated successfully", response);
+    });
   }
 }

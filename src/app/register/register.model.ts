@@ -13,5 +13,5 @@ export type ProfileModel = {
   homeAddress2?: string ;
   companyAddress1?: string ;
   companyAddress2?: string ;
-  file: File | null;
+  file: string |  ArrayBuffer;
 };
