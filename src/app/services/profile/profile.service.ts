@@ -9,7 +9,7 @@ import { HttpClient } from "@angular/common/http";
 export class ProfileService {
   isEdit = new BehaviorSubject<boolean>(false);
   isShowRegisterModel = new BehaviorSubject<boolean>(false);
-  private apiUrl = "http://localhost:3000/profile";
+  private apiUrl = "https://demoapp-assignment-jsonserver.vercel.app/profile";
 
   private profileDataSubject = new BehaviorSubject<Number>(0);
   profileValue$ = this.profileDataSubject.asObservable();
